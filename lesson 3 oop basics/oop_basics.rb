@@ -9,7 +9,7 @@ class Station
   end
 
   def show_train_by_type(type)
-    @trains.select{|train| train.type == type}
+    @trains.select { |train| train.type == type }
   end
 
   def send_train(train)
@@ -69,6 +69,40 @@ class Train
   def accept_route(route)
     @route = route
     @route.starting_station.accept_train(self)
+    @station_index = 0
+  end
+
+  def current_station
+    @route.show_all_stations[@station_index]
+  end
+
+  def next_station
+    return unless @route
+
+    @route.show_all_stations[@station_index + 1]
+  end
+
+  def previous_station
+    return unless @route
+    return if @station_index < 1
+
+    @route.show_all_stations[@station_index - 1]
+  end
+
+  def move_forward
+    return unless @route && next_station
+
+    current_station.send_train(self)
+    @station_index += 1
+    current_station.accept_train(self)
+  end
+
+  def move_back
+    return unless @route && previous_station
+
+    current_station.send_train(self)
+    @station_index -= 1
+    current_station.accept_train(self)
   end
 end
 
@@ -79,4 +113,5 @@ route1.delete_intermediate_station(intermediate_station)
 # p route1.show_all_stations
 train = Train.new('10', 'type1', 3)
 train.accept_route(route1)
-p route1.starting_station.show_train_by_type('type1')
+train.move_forward
+p route1.show_all_stations
