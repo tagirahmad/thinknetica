@@ -1,6 +1,11 @@
 class Train
+  include Manufacturer
+  include InstanceCounter
+
   attr_reader :speed, :type, :train_number
   attr_writer :wagon
+
+  @@trains = []
 
   def initialize(train_number, type = nil)
     @train_number = train_number
@@ -8,6 +13,12 @@ class Train
     @wagons = []
     @speed = 0
     @route = nil
+    @@trains << self
+    register_instance
+  end
+
+  def find(train_number)
+    @trains.find { |train| train.train_number == train_number }
   end
 
   def increase_speed(speed)
@@ -18,7 +29,7 @@ class Train
     @speed = 0
   end
 
-  def hitch_wagon wagon
+  def hitch_wagon(wagon)
     @wagons << wagon if @speed.zero?
   end
 
@@ -78,12 +89,13 @@ class PassengerTrain < Train
   end
 
   private
-  # Method is private because 
+
+  # Method is private because
   # no need to be accessed from outer scope
   # It's a realization, not the interface
 
   def correct_wagon?(wagon)
-    wagon.type == self.type ? true : false 
+    wagon.type == type
   end
 end
 
@@ -99,11 +111,12 @@ class CargoTrain < Train
   end
 
   private
-  # Method is private because 
+
+  # Method is private because
   # no need to be accessed from outer scope
   # It's a realization, not the interface
 
   def correct_wagon?(wagon)
-      wagon.type == self.type ? true : false
+    wagon.type == type
   end
 end
