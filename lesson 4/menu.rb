@@ -36,7 +36,7 @@ class MenuContainer
         @stations.each_with_index do |station, index|
           puts "#{index}. #{station.name}:  #{station.trains.map(&:train_number)}"
         end
-        
+
         puts "\n"
 
         @trains.each_with_index do |train, index|
@@ -58,20 +58,28 @@ class MenuContainer
   end
 
   def add_train
-    print 'Write train number: '
-    train_number = gets.chomp
+    begin
+      print 'Write train number: '
+      train_number = gets.chomp
 
-    puts <<~MENU
-      Choose train type:
-      1. Passenger
-      2. Cargo
-    MENU
+      puts <<~MENU
+        Choose train type:
+        1. Passenger
+        2. Cargo
+      MENU
 
-    case gets.chomp.to_i
-    when 1
-      @trains << PassengerTrain.new(train_number)
-    when 2
-      @trains << CargoTrain.new(train_number)
+      case gets.chomp.to_i
+      when 1
+        @trains << PassengerTrain.new(train_number)
+      when 2
+        @trains << CargoTrain.new(train_number)
+      else puts 'Wrong type'
+      end
+
+      puts "You have created #{@trains.last.train_number}" if @trains.last.valid?
+    rescue RuntimeError => e
+      puts e.message
+      add_train
     end
   end
 

@@ -1,5 +1,6 @@
 require 'byebug'
 
+require_relative 'validator'
 require_relative 'instance_counter'
 require_relative 'manufacturer'
 require_relative 'route'
@@ -20,8 +21,8 @@ stations << Station.new('Station 8')
 
 route = Route.new(stations[0], stations[-1])
 
-train = PassengerTrain.new('Pass1')
-train2 = CargoTrain.new('998')
+train = PassengerTrain.new('Pas-11')
+train2 = CargoTrain.new('998tr')
 
 train.accept_route(route)
 

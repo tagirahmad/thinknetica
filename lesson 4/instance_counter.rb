@@ -24,5 +24,4 @@ module InstanceCounter
       self.class.increase_count
     end
   end
-
 end

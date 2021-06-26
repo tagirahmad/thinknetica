@@ -1,6 +1,9 @@
 class Train
   include Manufacturer
   include InstanceCounter
+  include Validator
+
+  REGEXP_NUMBER_PATTERN = /^[\w\d]{3}-?[\w|\d]{2}$/.freeze
 
   attr_reader :speed, :type, :train_number
   attr_writer :wagon
@@ -10,6 +13,7 @@ class Train
   def initialize(train_number, type = nil)
     @train_number = train_number
     @type = type
+    validate!
     @wagons = []
     @speed = 0
     @route = nil
@@ -74,6 +78,13 @@ class Train
     current_station.send_train(self)
     @station_index -= 1
     current_station.accept_train(self)
+  end
+
+  protected
+
+  def validate!
+    raise 'Train number should not be empty' if @train_number.empty?
+    raise 'The number does not fit the template' if @train_number !~ REGEXP_NUMBER_PATTERN
   end
 end
 

@@ -1,5 +1,6 @@
 class Station
   include InstanceCounter
+  include Validator
 
   attr_reader :name, :trains
 
@@ -12,6 +13,7 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
+    validate!
     self.class.stations << self
     register_instance
   end
@@ -30,5 +32,12 @@ class Station
 
   def send_train(train)
     @trains.delete(train)
+  end
+
+  protected
+
+  def validate!
+    raise 'Station name should not be empty' if @name.empty?
+    raise 'Station should not be less that 5 charachters' if @name.size < 5
   end
 end
