@@ -10,11 +10,11 @@ class Wagon
   end
 
   def reserve
-    
+    raise NotImplementedError.new("You must implement #reserve.")
   end
 
   def free
-    
+    raise NotImplementedError.new("You must implement #free.")
   end
 
   private
