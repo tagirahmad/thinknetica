@@ -34,7 +34,11 @@ class MenuContainer
       when 6
         puts 'List of all stations and trains: '
         @stations.each_with_index do |station, index|
-          puts "#{index}. #{station.name}:  #{station.trains.map(&:train_number)}"
+          puts <<~STATIONS
+          #{index}. #{station.name}:  
+          #{station.trains.map { |t| "#{t.train_number} - #{t.wagons.length} wagons count - #{t.type} type" }}
+          #{station.trains.map { |t| "Train #{t.train_number} #{t.wagons.map{ |w| "#{w.type.to_s} wagon (#{w.reserved} reserved; #{w.free} free)"}}" }}
+          STATIONS
         end
 
         puts "\n"

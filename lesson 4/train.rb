@@ -5,12 +5,12 @@ class Train
 
   REGEXP_NUMBER_PATTERN = /^[\w\d]{3}-?[\w|\d]{2}$/.freeze
 
-  attr_reader :speed, :type, :train_number
+  attr_reader :speed, :type, :train_number, :wagons
   attr_writer :wagon
 
   @@trains = []
 
-  def initialize(train_number, type = nil)
+  def initialize(train_number)
     @train_number = train_number
     @type = type
     validate!
@@ -19,6 +19,13 @@ class Train
     @route = nil
     @@trains << self
     register_instance
+  end
+
+  def iterate_over_wagons
+    @wagons.each do |wagon|
+      yield(wagon)
+    end
+    nil
   end
 
   def find(train_number)

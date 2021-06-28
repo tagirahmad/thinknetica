@@ -34,6 +34,13 @@ class Station
     @trains.delete(train)
   end
 
+  def iterate_over_trains
+    @trains.each do |train|
+      yield(train)
+    end
+    nil
+  end
+
   protected
 
   def validate!
