@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 class MenuContainer
+  include Consts
+
   def initialize(stations, trains, routes)
     @stations = stations
     @trains = trains
@@ -6,38 +10,22 @@ class MenuContainer
   end
 
   def run
-    menu = <<~MENU
-      Choose the action:
-      1. Create station
-      2. Create train
-      3. Create route
-      4. Handle route
-      5. Handle train
-      6. List of all stations and trains
-      0. Exit
-    MENU
-
     loop do
-      puts menu
+      puts MENU
 
       case gets.chomp.to_i
-      when 1
-        add_station
-      when 2
-        add_train
-      when 3
-        add_route
-      when 4
-        modify_route
-      when 5
-        modify_train
+      when 1 then add_station
+      when 2 then add_train
+      when 3 then add_route
+      when 4 then modify_route
+      when 5 then modify_train
       when 6
         puts 'List of all stations and trains: '
         @stations.each_with_index do |station, index|
           puts <<~STATIONS
-          #{index}. #{station.name}:  
-          #{station.trains.map { |t| "#{t.train_number} - #{t.wagons.length} wagons count - #{t.type} type" }}
-          #{station.trains.map { |t| "Train #{t.train_number} #{t.wagons.map{ |w| "#{w.type.to_s} wagon (#{w.reserved} reserved; #{w.free} free)"}}" }}
+            #{index}. #{station.name}:#{'  '}
+            #{station.trains.map { |t| "#{t.train_number} - #{t.wagons.length} wagons count - #{t.type} type" }}
+            #{station.trains.map { |t| "Train #{t.train_number} #{t.wagons.map { |w| "#{w.type} wagon (#{w.reserved} reserved; #{w.free} free)" }}" }}
           STATIONS
         end
 
@@ -46,10 +34,8 @@ class MenuContainer
         @trains.each_with_index do |train, index|
           puts "#{index}. #{train.train_number}"
         end
-      when 0
-        break
-      else
-        puts menu
+      when 0 then break
+      else puts menu
       end
     end
   end
@@ -62,29 +48,21 @@ class MenuContainer
   end
 
   def add_train
-    begin
-      print 'Write train number: '
-      train_number = gets.chomp
+    print 'Write train number: '
+    train_number = gets.chomp
 
-      puts <<~MENU
-        Choose train type:
-        1. Passenger
-        2. Cargo
-      MENU
+    puts CHOOSE_TRAIN
 
-      case gets.chomp.to_i
-      when 1
-        @trains << PassengerTrain.new(train_number)
-      when 2
-        @trains << CargoTrain.new(train_number)
-      else puts 'Wrong type'
-      end
-
-      puts "You have created #{@trains.last.train_number}" if @trains.last.valid?
-    rescue RuntimeError => e
-      puts e.message
-      add_train
+    case gets.chomp.to_i
+    when 1 then @trains << PassengerTrain.new(train_number)
+    when 2 then @trains << CargoTrain.new(train_number)
+    else puts 'Wrong type'
     end
+
+    puts "You have created #{@trains.last.train_number}" if @trains.last.valid?
+  rescue RuntimeError => e
+    puts e.message
+    add_train
   end
 
   def add_route
@@ -108,15 +86,9 @@ class MenuContainer
     @routes.each_with_index { |route, index| puts "#{index}. #{route.show_station_names}" }
 
     route = @routes[gets.chomp.to_i]
-    menu = <<~MENU
-      Actions:
-      1. Add Station
-      2. Delete Station
-      0. Exit
-    MENU
 
     loop do
-      puts menu
+      puts STATION_ACTIONS
       case gets.chomp.to_i
       when 1
         puts 'Choose stantion:'
@@ -127,10 +99,8 @@ class MenuContainer
         route.show_all_stations.each_with_index { |station, index| puts "#{index}. #{station.name}" }
         station = route.show_all_stations[gets.chomp.to_i]
         route.delete_intermediate_station(station)
-      when 0
-        break
-      else
-        puts 'Wrong action'
+      when 0 then break
+      else puts 'Wrong action'
       end
     end
   end
@@ -142,36 +112,21 @@ class MenuContainer
     @trains.each_with_index { |train, index| puts "#{index}. #{train.train_number}" }
 
     train = @trains[gets.chomp.to_i]
-    menu = <<~MENU
-      Actions:
-      1. Add route
-      2. Hitch wagon
-      3. Unhitch wagon
-      4. Into next station
-      5. Into previous station
-      0. Exit
-    MENU
 
     loop do
-      puts menu
+      puts TRAIN_ACTION
       case gets.chomp.to_i
       when 1
         puts 'Choose route:'
         @routes.each_with_index { |route, index| puts "#{index}. #{route.show_station_names}" }
         route = @routes[gets.chomp.to_i]
         train.accept_route(route)
-      when 2
-        train.hitch_wagon(Wagon.new(train.type))
-      when 3
-        train.unhitch_wagon
-      when 4
-        train.move_forward
-      when 5
-        train.move_back
-      when 0
-        break
-      else
-        puts 'Wrong action'
+      when 2 then train.hitch_wagon(Wagon.new(train.type))
+      when 3 then train.unhitch_wagon
+      when 4 then train.move_forward
+      when 5 then train.move_back
+      when 0 then break
+      else puts 'Wrong action'
       end
     end
   end

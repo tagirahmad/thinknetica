@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Train
   include Manufacturer
   include InstanceCounter
@@ -21,10 +23,8 @@ class Train
     register_instance
   end
 
-  def iterate_over_wagons
-    @wagons.each do |wagon|
-      yield(wagon)
-    end
+  def iterate_over_wagons(&block)
+    @wagons.each(&block)
     nil
   end
 

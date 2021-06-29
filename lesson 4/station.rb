@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Station
   include InstanceCounter
   include Validator
@@ -34,10 +36,8 @@ class Station
     @trains.delete(train)
   end
 
-  def iterate_over_trains
-    @trains.each do |train|
-      yield(train)
-    end
+  def iterate_over_trains(&block)
+    @trains.each(&block)
     nil
   end
 

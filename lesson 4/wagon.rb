@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Wagon
   include Manufacturer
   include Validator
@@ -10,11 +12,11 @@ class Wagon
   end
 
   def reserve
-    raise NotImplementedError.new("You must implement #reserve.")
+    raise NotImplementedError, 'You must implement #reserve.'
   end
 
   def free
-    raise NotImplementedError.new("You must implement #free.")
+    raise NotImplementedError, 'You must implement #free.'
   end
 
   private
@@ -55,12 +57,12 @@ class PassengerWagon < Wagon
   def free_places
     @seats_number - @reserved_seats
   end
-
 end
 
+# The concrete implementation of base Wagon class
 class CargoWagon < Wagon
   attr_reader :reserved_volume, :volume
-  
+
   def initialize(volume)
     @type = :cargo
     @volume = volume
