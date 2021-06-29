@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base train class
 class Train
   include Manufacturer
   include InstanceCounter
@@ -95,11 +96,12 @@ class Train
   end
 end
 
+# Child class of Train
 class PassengerTrain < Train
   def initialize(train_number)
     @train_number = train_number
+    super(train_number)
     @type = :passenger
-    super
   end
 
   def hitch_wagon(wagon)
@@ -117,11 +119,12 @@ class PassengerTrain < Train
   end
 end
 
+# Child class of Train
 class CargoTrain < Train
   def initialize(train_number)
     @train_number = train_number
+    super(train_number)
     @type = :cargo
-    super
   end
 
   def hitch_wagon(wagon)

@@ -1,4 +1,4 @@
-alphabet = Hash.new
+alphabet = {}
 
 ('a'..'z').each_with_index do |l, i|
   alphabet[l] = i + 1

@@ -4,7 +4,7 @@ name = gets.chomp
 puts 'Please, enter your height'
 height = gets.chomp
 
-def count_ideal_weight name, height
+def count_ideal_weight(name, height)
   ideal_weight = (height - 110).to_f * 1.15
 
   if ideal_weight < 0

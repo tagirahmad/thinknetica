@@ -10,11 +10,11 @@ months = {
   september: 30,
   october: 31,
   november: 30,
-  december: 31,
+  december: 31
 }
 
-filtered_months = months.select { |_, days| days == 30}
+filtered_months = months.select { |_, days| days == 30 }
 
-for month, _ in filtered_months do
+filtered_months.each do |month, _|
   puts month
 end

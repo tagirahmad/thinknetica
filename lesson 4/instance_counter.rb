@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+# Counts number of class instances
 module InstanceCounter
   def self.included(base)
     base.extend(ClassMethods)
     base.include(InstanceMethods)
   end
 
+  # Class methods for class which includes InstanceCounter
   module ClassMethods
     attr_accessor :count
 
@@ -19,6 +21,7 @@ module InstanceCounter
     end
   end
 
+  # Instance methods for class which includes InstanceCounter
   module InstanceMethods
     protected
 

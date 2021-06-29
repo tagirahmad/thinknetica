@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Route class
 class Route
   include InstanceCounter
   include Validator

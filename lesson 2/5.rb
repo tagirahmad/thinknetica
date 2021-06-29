@@ -24,6 +24,6 @@ months = {
 
 months[2] = 29 if ((year % 400 == 0) && (year % 4 == 0)) || (year % 100 != 0)
 
-past_monts = months.select{|key, val| key < month } 
+past_monts = months.select { |key, _val| key < month }
 
 puts "Days: #{past_monts.values.sum + day}"

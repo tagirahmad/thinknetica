@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base wagon class
 class Wagon
   include Manufacturer
   include Validator
@@ -9,6 +10,10 @@ class Wagon
   def initialize(type)
     @type = type
     validate!
+  end
+
+  def reserved
+    raise NotImplementedError, 'You must implement #reserved.'
   end
 
   def reserve
@@ -26,6 +31,7 @@ class Wagon
   end
 end
 
+# Child class of Wagon
 class PassengerWagon < Wagon
   attr_reader :reserved_seats, :seats_number
 
@@ -59,7 +65,7 @@ class PassengerWagon < Wagon
   end
 end
 
-# The concrete implementation of base Wagon class
+# Child class of Wagon
 class CargoWagon < Wagon
   attr_reader :reserved_volume, :volume
 
