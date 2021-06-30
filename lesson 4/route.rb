@@ -3,9 +3,14 @@
 # Route class
 class Route
   include InstanceCounter
-  include Validator
+  include Validation
 
   attr_reader :starting_station
+
+  validate :starting_station, :presence
+  validate :end_station, :presence
+  validate :starting_station, :type, Station
+  validate :end_station, :type, Station
 
   def initialize(starting_station, end_station)
     @starting_station = starting_station
@@ -29,12 +34,5 @@ class Route
 
   def show_station_names
     @stations_list.map(&:name)
-  end
-
-  protected
-
-  def validate!
-    raise 'Starting station should be Station instance' unless @starting_station.is_a? Station
-    raise 'End station should Station instance' unless @end_station.is_a? Station
   end
 end

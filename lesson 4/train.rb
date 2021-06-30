@@ -4,7 +4,6 @@
 class Train
   include Manufacturer
   include InstanceCounter
-  include Validator
 
   REGEXP_NUMBER_PATTERN = /^[\w\d]{3}-?[\w|\d]{2}$/.freeze
 
@@ -87,17 +86,15 @@ class Train
     @station_index -= 1
     current_station.accept_train(self)
   end
-
-  protected
-
-  def validate!
-    raise 'Train number should not be empty' if @train_number.empty?
-    raise 'The number does not fit the template' if @train_number !~ REGEXP_NUMBER_PATTERN
-  end
 end
 
 # Child class of Train
 class PassengerTrain < Train
+  include Validation
+
+  validate :train_number, :presence
+  validate :train_number, :format, REGEXP_NUMBER_PATTERN
+
   def initialize(train_number)
     @train_number = train_number
     super(train_number)
@@ -121,6 +118,11 @@ end
 
 # Child class of Train
 class CargoTrain < Train
+  include Validation
+
+  validate :train_number, :presence
+  validate :train_number, :format, REGEXP_NUMBER_PATTERN
+
   def initialize(train_number)
     @train_number = train_number
     super(train_number)

@@ -3,7 +3,7 @@
 # Station class
 class Station
   include InstanceCounter
-  include Validator
+  include Validation
 
   attr_reader :name, :trains
 
@@ -12,6 +12,8 @@ class Station
   class << self
     attr_accessor :stations
   end
+
+  validate :name, :presence
 
   def initialize(name)
     @name = name
@@ -40,12 +42,5 @@ class Station
   def iterate_over_trains(&block)
     @trains.each(&block)
     nil
-  end
-
-  protected
-
-  def validate!
-    raise 'Station name should not be empty' if @name.empty?
-    raise 'Station should not be less that 5 charachters' if @name.size < 5
   end
 end
